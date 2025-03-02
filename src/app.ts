@@ -11,6 +11,11 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/', (req, res, next) => {
+  console.log(`Request URL: ${req.url}`);
+  console.log(`Request URL: ${req.body}`);
+  next();
+});
 app.use("/api", authorRoutes);
 app.use("/api", bookRoutes);
 

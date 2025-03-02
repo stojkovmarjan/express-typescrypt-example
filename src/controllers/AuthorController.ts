@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Author from "../models/Author";
 import Book from "../models/Book";
+import { ValidationError } from "sequelize";
 
 export class AuthorController {
   async getAllAuthors(req: Request, res: Response) {
@@ -20,8 +21,19 @@ export class AuthorController {
 
   async createAuthor(req: Request, res: Response) {
     const { name } = req.body;
-    const newAuthor = await Author.create({ name });
-    res.status(201).json(newAuthor);
+    
+    try {
+      const newAuthor = await Author.create({ name });
+      res.status(201).json(newAuthor);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        res.status(400).json({ errors: error.errors.map(e => e.message) });
+      } else {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    }
+   
   }
 
   async updateAuthor(req: Request, res: Response) {
