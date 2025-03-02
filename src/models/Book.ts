@@ -1,11 +1,12 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/db.config';
+import Author from './Author';
 
 class Book extends Model {
   public id!: number;
   public title!: string;
   public price!: number;
-  public author!: string;
+  public authorId!: number;
 }
 
 Book.init(
@@ -23,15 +24,22 @@ Book.init(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    author: {
-      type: DataTypes.STRING,
+    authorId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'Authors', // table name, not model name
+        key: 'id',
     },
   },
+},
   {
     sequelize,
     modelName: 'Book',
   }
-);
 
+);
+// Define the association
+Book.belongsTo(Author, { foreignKey: 'authorId' });
+Author.hasMany(Book, { foreignKey: 'authorId' });
 export default Book;
