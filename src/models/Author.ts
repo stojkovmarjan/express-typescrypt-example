@@ -1,5 +1,5 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/db.config';
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../config/db.config";
 
 class Author extends Model {
   public id!: number;
@@ -16,11 +16,18 @@ Author.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
+      validate: {
+        len: {
+          args: [2, 25],
+          msg: "Name must be between 2 and 25 characters long",
+        },
+      },
     },
   },
   {
     sequelize,
-    modelName: 'Author',
+    modelName: "Author",
   }
 );
 

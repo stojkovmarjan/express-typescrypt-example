@@ -6,7 +6,7 @@ import { ValidationError } from "sequelize";
 export class BookController {
   async getAllBooks(req: Request, res: Response) {
     const books = await Book.findAll({ include: [Author] });
-    console.log(books);
+    // console.log(books);
     res.json(books);
   }
 
