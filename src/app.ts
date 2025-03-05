@@ -17,12 +17,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`Request URL: ${req.url}`);
   console.log(`Request Body: ${JSON.stringify(req.body)}`);
-  console.log("-----------------");
+  console.log("Request middleware ---------------------");
   next();
 });
 
 // Middleware to intercept responses
 app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log("Response middleware -----------------");
   const originalSend = res.send;
   res.send = function (body?: any): Response {
     // Modify the response body here if needed
